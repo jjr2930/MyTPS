@@ -7,6 +7,13 @@ using UnityEngine.Assertions;
 
 namespace MyTPS
 {
+    public enum ItemOrder
+    {
+        Primary = 1,
+        Secondary = 2,
+        Hand = 6,
+    }
+
     public partial struct PlayerAnimatorSystem : ISystem 
     { 
         public void OnUpdate(ref SystemState state)
@@ -26,8 +33,8 @@ namespace MyTPS
                 var controlledCharacter = basicPlayer.ControlledCharacter;
 
                 Animator animator = null;
-                
-                if(state.EntityManager.HasComponent<AnimatorModelInstanceData>(controlledCharacter))
+
+                if (state.EntityManager.HasComponent<AnimatorModelInstanceData>(controlledCharacter))
                 {
                     var animatorModelInstance = state.EntityManager.GetComponentObject<AnimatorModelInstanceData>(controlledCharacter);
                     Assert.IsNotNull(animatorModelInstance.instance);
@@ -46,9 +53,8 @@ namespace MyTPS
                     isGround = kinematicBody.IsGrounded;
                 }
 
-                animator.SetBool(AnimatorHash.Ground, isGround); 
+                animator.SetBool(AnimatorHash.Ground, isGround);
                 #endregion
-
 
                 #region Running and walking
                 var x = animator.GetFloat(AnimatorHash.X);
@@ -84,12 +90,34 @@ namespace MyTPS
                 #endregion
 
                 #region Jump!
-                if(basicInput.JumpPressed.IsSet(tick) && false == animator.IsInTransition(0))
+                if (basicInput.JumpPressed.IsSet(tick) && false == animator.IsInTransition(0))
                 {
                     Debug.Log("Jump pressed");
                     animator.SetTrigger(AnimatorHash.Jump);
                 }
 
+                #endregion
+
+                #region Weapon
+
+                if (basicInput.primaryPressed.IsSet(tick))
+                {
+                    Debug.Log("primary Pressed");
+                    animator.SetInteger(AnimatorHash.Weapon, (int)ItemOrder.Primary);
+                }
+
+                if (basicInput.secondaryPressed.IsSet(tick))
+                {
+                    Debug.Log("secondary pressed");
+                    animator.SetInteger(AnimatorHash.Weapon, (int)ItemOrder.Secondary);
+                }
+
+
+                if (basicInput.handPressed.IsSet(tick))
+                {
+                    Debug.Log("hand Pressed");
+                    animator.SetInteger(AnimatorHash.Weapon, (int)ItemOrder.Hand);
+                }
                 #endregion
             }
             //uint tick = SystemAPI.GetSingleton<FixedTickSystem.Singleton>().Tick;

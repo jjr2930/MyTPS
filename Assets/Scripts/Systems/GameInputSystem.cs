@@ -48,8 +48,22 @@ namespace MyTPS
                 playerInputs.ValueRW.aimPressed = humanAction.Aim.IsPressed();
                 if (humanAction.Jump.WasPressedThisFrame())
                 {
-                    Debug.Log("jump pressed this frame");
                     playerInputs.ValueRW.JumpPressed.Set(tick);
+                }
+
+                if(humanAction.PrimaryWeapon.WasPressedThisFrame())
+                {
+                    playerInputs.ValueRW.primaryPressed.Set(tick);
+                }
+
+                if(humanAction.SecondaryWeapon.WasPressedThisFrame())
+                {
+                    playerInputs.ValueRW.secondaryPressed.Set(tick);
+                }
+
+                if(humanAction.Hand.WasPressedThisFrame())
+                {
+                    playerInputs.ValueRW.handPressed.Set(tick);
                 }
             }
         }

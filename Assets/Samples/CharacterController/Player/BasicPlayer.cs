@@ -18,4 +18,7 @@ public struct BasicPlayerInputs : IComponentData
     public float CameraZoomInput;
     public FixedInputEvent JumpPressed;
     public bool aimPressed;
+    public FixedInputEvent primaryPressed;
+    public FixedInputEvent secondaryPressed;
+    public FixedInputEvent handPressed;
 }

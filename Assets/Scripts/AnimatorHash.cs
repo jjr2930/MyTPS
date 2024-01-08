@@ -13,5 +13,6 @@ namespace MyTPS
         public static int Jump = Animator.StringToHash("Jump");
         public static int Locomotion = Animator.StringToHash("Locomotion");
         public static int Moving = Animator.StringToHash("Moving");
+        public static int Weapon = Animator.StringToHash("Weapon");
     }
 }
