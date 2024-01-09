@@ -17,15 +17,15 @@ namespace MyTPS
         public float distance;
         public float startPolar;
 
-        public void OnDrawGizmos()
-        {
-            if (null == target)
-            {
-                return;
-            }
-            Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
-            Gizmos.DrawSphere(target.transform.position, distance);
-        }
+        //public void OnDrawGizmos()
+        //{
+        //    if (null == target)
+        //    {
+        //        return;
+        //    }
+        //    Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
+        //    Gizmos.DrawSphere(target.transform.position, distance);
+        //}
 
         public class Baker : Baker<CustomTPSCameraAuthoring>
         {

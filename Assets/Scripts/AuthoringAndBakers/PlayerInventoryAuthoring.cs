@@ -13,43 +13,62 @@ namespace MyTPS
         public class InventoryWeaponItem
         {
             public ItemOrder order;
+            public string socketName;
             public GameObject prefab;
+            public float fireInterval;
         }
 
-        public InventoryWeaponItem[] weapons;
+        public List<InventoryWeaponItem> items = new List<InventoryWeaponItem>();
 
         public class Baker : Baker<PlayerInventoryAuthoring>
         {
             public override void Bake(PlayerInventoryAuthoring authoring)
             {
                 var playerEntity = GetEntity(TransformUsageFlags.Dynamic);
-                var blobBuilder = new BlobBuilder(Allocator.Temp);
-                ref InventoryItemCollection itemCollection = ref blobBuilder.ConstructRoot<InventoryItemCollection>();
-                BlobBuilderArray<InventoryItem> arrayBuilder = blobBuilder.Allocate(
-                        ref itemCollection.items,
-                        authoring.weapons.Length
-                    );
+                var newInventory = new PlayerInventory();
 
-                if(null != authoring.weapons && authoring.weapons.Length > 0)
+                for(int i = 0; i<authoring.items.Count; ++i)
                 {
-                    for (int i = 0; i < authoring.weapons.Length; i++)
+                    newInventory.items.Add(new InventoryItem()
                     {
-                        arrayBuilder[i] = new InventoryItem
-                        {
-                            order = authoring.weapons[i].order,
-                            prefab = GetEntity(authoring.weapons[i].prefab, TransformUsageFlags.Dynamic)
-                        };
-                    }
+                        order = authoring.items[i].order,
+                        socketName = authoring.items[i].socketName,
+                        prefab = authoring.items[i].prefab,
+                        fireInterval = authoring.items[i].fireInterval,
+                    });
                 }
 
-                var result = blobBuilder.CreateBlobAssetReference<InventoryItemCollection>(Allocator.Persistent);                
+                AddComponentObject(playerEntity, newInventory);
+                /*
+                //var playerEntity = GetEntity(TransformUsageFlags.Dynamic);
+                //var blobBuilder = new BlobBuilder(Allocator.Temp);
+                //ref InventoryItemCollection itemCollection = ref blobBuilder.ConstructRoot<InventoryItemCollection>();
+                //BlobBuilderArray<InventoryItem> arrayBuilder = blobBuilder.Allocate(
+                //        ref itemCollection.items,
+                //        authoring.weapons.Length
+                //    );
 
-                AddComponent(playerEntity, new PlayerInventory()
-                {
-                    items = result
-                });
+                //if(null != authoring.weapons && authoring.weapons.Length > 0)
+                //{
+                //    for (int i = 0; i < authoring.weapons.Length; i++)
+                //    {
+                //        arrayBuilder[i] = new InventoryItem
+                //        {
+                //            order = authoring.weapons[i].order,
+                //            prefab = GetEntity(authoring.weapons[i].prefab, TransformUsageFlags.Dynamic)
+                //        };
+                //    }
+                //}
 
-                blobBuilder.Dispose();
+                //var result = blobBuilder.CreateBlobAssetReference<InventoryItemCollection>(Allocator.Persistent);                
+
+                //AddComponent(playerEntity, new PlayerInventory()
+                //{
+                //    items = result
+                //});
+
+                //blobBuilder.Dispose();
+                */
             }
         }
     }

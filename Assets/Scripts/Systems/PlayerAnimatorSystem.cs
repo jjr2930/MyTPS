@@ -25,6 +25,7 @@ namespace MyTPS
             var entities = entityQuery.ToEntityArray(Allocator.Temp);
             var deltaTime = SystemAPI.Time.DeltaTime;
             uint tick = SystemAPI.GetSingleton<FixedTickSystem.Singleton>().Tick;
+
             foreach (var entity in entities)
             {
                 var basicPlayer = SystemAPI.GetComponent<BasicPlayer>(entity);
@@ -102,20 +103,20 @@ namespace MyTPS
 
                 if (basicInput.primaryPressed.IsSet(tick))
                 {
-                    Debug.Log("primary Pressed");
+                    Debug.Log("primary Pressed in tick : " + tick);
                     animator.SetInteger(AnimatorHash.Weapon, (int)ItemOrder.Primary);
                 }
 
                 if (basicInput.secondaryPressed.IsSet(tick))
                 {
-                    Debug.Log("secondary pressed");
+                    Debug.Log("secondary pressed in tick : " + tick);
                     animator.SetInteger(AnimatorHash.Weapon, (int)ItemOrder.Secondary);
                 }
 
 
                 if (basicInput.handPressed.IsSet(tick))
                 {
-                    Debug.Log("hand Pressed");
+                    Debug.Log("hand Pressed in tick : " + tick);
                     animator.SetInteger(AnimatorHash.Weapon, (int)ItemOrder.Hand);
                 }
                 #endregion

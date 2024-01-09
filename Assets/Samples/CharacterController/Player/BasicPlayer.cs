@@ -8,6 +8,8 @@ public struct BasicPlayer : IComponentData
 {
     public Entity ControlledCharacter;
     public Entity ControlledCamera;
+    public double lastTime;
+    public double fireInterval;
 }
 
 [Serializable]
@@ -21,4 +23,5 @@ public struct BasicPlayerInputs : IComponentData
     public FixedInputEvent primaryPressed;
     public FixedInputEvent secondaryPressed;
     public FixedInputEvent handPressed;
+    public bool firePressed;
 }

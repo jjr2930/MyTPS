@@ -112,3 +112,53 @@ public partial struct BasicFixedStepPlayerControlSystem : ISystem
         }
     }
 }
+
+[UpdateAfter(typeof(FixedTickSystem.Singleton))]
+public partial struct BasicPlayerInventorySystem : ISystem
+{
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<BasicPlayer>();
+        state.RequireForUpdate<BasicPlayerInputs>();
+        state.RequireForUpdate<PlayerInventory>();
+        state.RequireForUpdate<FixedTickSystem.Singleton>();
+    }
+    public void OnUpdate(ref SystemState state)
+    {
+        var tick = SystemAPI.GetSingleton<FixedTickSystem.Singleton>().Tick;
+
+        var query = SystemAPI.QueryBuilder()
+            .WithAll<BasicPlayer>()
+            .WithAll<BasicPlayerInputs>()
+            .WithAll<PlayerInventory>()
+            .Build();
+
+        var entities = query.ToEntityArray(Allocator.Temp);
+        foreach (var entity in entities)
+        {
+            var basicPlayer = SystemAPI.GetComponentRW<BasicPlayer>(entity);
+            var basicInput = SystemAPI.GetComponentRO<BasicPlayerInputs>(entity);
+            var inventory = state.EntityManager.GetComponentData<PlayerInventory>(entity);
+            InventoryItem inventoryItem = null;
+            if(basicInput.ValueRO.primaryPressed.IsSet(tick))
+            {
+                inventoryItem = inventory.GetItemByOrder(ItemOrder.Primary);
+            }
+
+            if(basicInput.ValueRO.secondaryPressed.IsSet(tick))
+            {
+                inventoryItem = inventory.GetItemByOrder(ItemOrder.Secondary);
+            }
+
+            if(basicInput.ValueRO.handPressed.IsSet(tick))
+            {
+                inventoryItem = inventory.GetItemByOrder(ItemOrder.Hand);
+            }
+
+            if(null != inventoryItem)
+            {
+                basicPlayer.ValueRW.fireInterval = inventoryItem.fireInterval;
+            }
+        }
+    }
+}

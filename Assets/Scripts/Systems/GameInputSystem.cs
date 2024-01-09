@@ -65,6 +65,8 @@ namespace MyTPS
                 {
                     playerInputs.ValueRW.handPressed.Set(tick);
                 }
+
+                playerInputs.ValueRW.firePressed = humanAction.Fire.IsPressed();
             }
         }
     }
