@@ -9,6 +9,8 @@ TPS Practice for DOTS
 <br>free Look : https://youtu.be/uv1OJT1D6YU
 <br>aim look : https://youtu.be/rzAFfTmzXA8
 - 사격기능
+<br> https://youtu.be/TTpFs73JjtA
+
 - Enities의 Streaming 로딩을 이용한 빠른 로딩 구현
 - 인벤토리
 - 투척 무기(수류탄)
