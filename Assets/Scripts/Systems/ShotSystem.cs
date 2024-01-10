@@ -1,6 +1,7 @@
 
 using Unity.Entities;
 using Unity.Physics;
+using Unity.Physics.Authoring;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -36,7 +37,6 @@ namespace MyTPS
                     {
                         basicPlayer.ValueRW.lastTime = elapsedTime;
                         basicPlayer.ValueRW.lastShotTick = tick;
-                        Debug.Log("pressed tick : " + tick);
                         var cameraWorld = SystemAPI.GetComponentRO<LocalToWorld>(basicPlayer.ValueRO.ControlledCamera);
 
                         Debug.DrawRay(cameraWorld.ValueRO.Position, cameraWorld.ValueRO.Forward);
@@ -44,8 +44,15 @@ namespace MyTPS
                         var raycastInput = new RaycastInput
                         {
                             Start = cameraWorld.ValueRO.Position,
-                            End = cameraWorld.ValueRO.Forward,
-                            Filter = CollisionFilter.Default
+                            End = cameraWorld.ValueRO.Position + cameraWorld.ValueRO.Forward * 1000f,
+                            //Start = Camera.main.transform.position,
+                            //End = Camera.main.transform.position + Camera.main.transform.forward * 1000f,
+                            Filter = new CollisionFilter
+                            {
+                                GroupIndex = 0
+                                ,BelongsTo = 1u << 0
+                                ,CollidesWith = 1u << 1
+                            }
                         };
 
 ;                       //var collector = new ClosestHitCollector<ColliderCastHit>(1000f);
@@ -53,6 +60,7 @@ namespace MyTPS
                         if(physicsWorld.CastRay(raycastInput, out hit))
                         {
                             Debug.Log("Hit! : " + hit.Position);
+                            AimDebugCube.Instance.transform.position = hit.Position;
                         }
                     }
                 }
