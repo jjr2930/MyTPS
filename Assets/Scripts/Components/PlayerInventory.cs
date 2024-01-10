@@ -37,6 +37,11 @@ namespace MyTPS
 
         void IDisposable.Dispose()
         {
+            for (int i = 0; i < items.Count; i++)
+            {
+                UnityEngine.Object.DestroyImmediate(items[i].instance);
+            }
+
             items.Clear();
         }
     }

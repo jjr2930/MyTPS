@@ -22,6 +22,7 @@ namespace MyTPS
 
             var physicsWorldSinglton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
             var physicsWorld = physicsWorldSinglton.CollisionWorld;
+            var tick = SystemAPI.GetSingleton<FixedTickSystem.Singleton>().Tick;
 
             foreach (var (basicInput, basicPlayer) 
                 in SystemAPI.Query<RefRW<BasicPlayerInputs>,RefRW<BasicPlayer>>())
@@ -34,7 +35,8 @@ namespace MyTPS
                     if (elapsedTime - lastTime >= interval)
                     {
                         basicPlayer.ValueRW.lastTime = elapsedTime;
-
+                        basicPlayer.ValueRW.lastShotTick = tick;
+                        Debug.Log("pressed tick : " + tick);
                         var cameraWorld = SystemAPI.GetComponentRO<LocalToWorld>(basicPlayer.ValueRO.ControlledCamera);
 
                         Debug.DrawRay(cameraWorld.ValueRO.Position, cameraWorld.ValueRO.Forward);

@@ -10,6 +10,7 @@ public struct BasicPlayer : IComponentData
     public Entity ControlledCamera;
     public double lastTime;
     public double fireInterval;
+    public uint lastShotTick;
 }
 
 [Serializable]

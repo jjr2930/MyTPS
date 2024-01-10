@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace MyTPS
 {
-    public class MuzzleFlamePoint : MonoBehaviour
+    public class MyTPSPoolObject : JLib.ObjectPool.DefaultPoolObject<PoolType>
     {
-        public VFXType vfxType;
     }
 }
